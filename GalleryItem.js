@@ -1,34 +1,48 @@
 var framework = require('./framework');
+var Tween = require('gsap');
 
-module.exports = function GalleryItem() {
+module.exports = function(parentContainer, type) {
 
-  var container;
-  var idx;
+  return function GalleryItem() {
 
-  return {
-    init: function(req, done) {
+    var container;
+    var idx;
 
-      console.log('init gallery item', req.route, req.params.id);
+    return {
+      init: function(req, done) {
 
-      container = document.createElement('div');
-      
-      idx = parseInt(req.params.id);
+        console.log('init gallery item', req.route, req.params.id);
 
-      container.innerHTML = req.params.id;
+        container = document.createElement('div');
+        
+        idx = parseInt(req.params.id);
 
-      document.getElementById('galleryContainer').appendChild(container);
+        container.innerHTML = type + ' ' + req.params.id;
+        container.style.position = 'absolute';
+        container.style.top = 500 + 'px';
 
-      container.addEventListener('click', function() {
+        parentContainer.appendChild(container);
 
-        framework.sub('gallery').go('/' + (idx + 1));
-      });
+        container.addEventListener('click', function() {
 
-      done();
-    },
+          framework.sub('gallery').go('/' + (idx + 1));
+        });
 
-    destroy: function(req, done) {
+        done();
+      },
 
-      container.parentNode.removeChild(container);
-    }
+      animateIn: function(req, done) {
+        Tween.to(container, 0.5, {top: 0, onComplete: done});
+      },
+
+      animateOut: function(req, done) {
+        Tween.to(container, 0.5, {left: 500, onComplete: done});
+      },
+
+      destroy: function(req, done) {
+
+        container.parentNode.removeChild(container);
+      }
+    };
   };
 };

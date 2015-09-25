@@ -9,6 +9,7 @@
   "author": "Mikko Haapoja <me@mikkoh.com>",
   "license": "ISC",
   "dependencies": {
-    "bigwheel": "^2.2.1"
+    "bigwheel": "^2.2.1",
+    "gsap": "^1.18.0"
   }
 }
